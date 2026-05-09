@@ -4,9 +4,6 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 
-  <!-- ═══════════════════════════════════════════
-       PWA META TAGS
-  ════════════════════════════════════════════ -->
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="apple-mobile-web-app-title" content="Pass">
@@ -31,7 +28,6 @@
       user-select: none;
     }
 
-    /* Conteneur racine plein écran */
     .app {
       position: fixed;
       inset: 0;
@@ -40,9 +36,6 @@
       background: #F2F2F7;
     }
 
-    /* ─────────────────────────────────────────────
-       HEADER
-    ───────────────────────────────────────────── */
     .header {
       flex-shrink: 0;
       position: relative;
@@ -86,15 +79,10 @@
       white-space: nowrap;
     }
 
-    /* ─────────────────────────────────────────────
-       ZONE SCREENSHOT SCROLLABLE
-       flex: 1 → prend tout l'espace entre header et tabbar
-    ───────────────────────────────────────────── */
     .content-wrapper {
       flex: 1;
       position: relative;
       overflow: hidden;
-      /* Le fond gris disparaît derrière l'image */
       background: #F2F2F7;
     }
 
@@ -107,7 +95,6 @@
       touch-action: pan-y;
     }
 
-    /* ⬇️ MODIFIER ICI : remplacez "ticket.png" par votre fichier */
     .ticket-screenshot {
       width: 100%;
       display: block;
@@ -115,10 +102,6 @@
       -webkit-user-drag: none;
     }
 
-    /* ─────────────────────────────────────────────
-       HORLOGE LIVE
-       Position réglée via CLOCK_TOP / CLOCK_RIGHT dans le <script>
-    ───────────────────────────────────────────── */
     .clock-overlay {
       position: absolute;
       color: #162044;
@@ -130,10 +113,6 @@
       z-index: 5;
     }
 
-    /* ─────────────────────────────────────────────
-       TAB BAR — collée en bas, pleine largeur, blanche
-       flex-shrink: 0 → jamais écrasée par le contenu
-    ───────────────────────────────────────────── */
     .tabbar {
       flex-shrink: 0;
       z-index: 20;
@@ -141,7 +120,6 @@
       border-top: 1px solid rgba(0, 0, 0, 0.08);
       display: flex;
       align-items: center;
-      /* hauteur fixe + safe area home indicator iPhone */
       padding-bottom: env(safe-area-inset-bottom, 0px);
       height: calc(64px + env(safe-area-inset-bottom, 0px));
       padding-left: 8px;
@@ -192,9 +170,6 @@
 
 <div class="app">
 
-  <!-- ═══════════════════════════════════════════
-       HEADER
-  ════════════════════════════════════════════ -->
   <header class="header">
     <div class="header__inner">
       <button class="header__back" aria-label="Retour">
@@ -208,9 +183,6 @@
     </div>
   </header>
 
-  <!-- ═══════════════════════════════════════════
-       ZONE SCREENSHOT SCROLLABLE (doigt vers le haut = voir la suite)
-  ════════════════════════════════════════════ -->
   <main class="content-wrapper" id="contentWrapper">
     <div class="content-drag" id="contentDrag">
 
@@ -218,23 +190,18 @@
       <img
         class="ticket-screenshot"
         id="ticketImg"
-        src="ticket.png"
+        src="ticket.jpeg"
         alt="Interrail Pass Ticket"
         draggable="false"
       />
 
-      <!-- Horloge live — positionnée par CLOCK_TOP / CLOCK_RIGHT ci-dessous -->
       <div class="clock-overlay" id="clockOverlay"></div>
 
     </div>
   </main>
 
-  <!-- ═══════════════════════════════════════════
-       TAB BAR — collée en bas, blanche, pleine largeur
-  ════════════════════════════════════════════ -->
   <nav class="tabbar" aria-label="Navigation principale">
 
-    <!-- Planner -->
     <div class="tab-item" role="button" aria-label="Planner">
       <svg class="tab-icon" viewBox="0 0 24 24">
         <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10
@@ -244,7 +211,6 @@
       <span class="tab-item__label">Planner</span>
     </div>
 
-    <!-- My Trip -->
     <div class="tab-item" role="button" aria-label="My Trip">
       <svg class="tab-icon" viewBox="0 0 24 24">
         <path d="M20 6h-3V4c0-1.1-.9-2-2-2H9C7.9 2 7 2.9 7 4v2H4
@@ -255,7 +221,6 @@
       <span class="tab-item__label">My Trip</span>
     </div>
 
-    <!-- My Pass — onglet actif -->
     <div class="tab-item active" role="button" aria-label="My Pass" aria-current="page">
       <svg class="tab-icon" viewBox="0 0 24 24">
         <path d="M20 4H4C2.89 4 2 4.89 2 6v12c0 1.11.89 2 2 2h16
@@ -265,7 +230,6 @@
       <span class="tab-item__label">My Pass</span>
     </div>
 
-    <!-- More -->
     <div class="tab-item" role="button" aria-label="More">
       <svg class="tab-icon" viewBox="0 0 24 24">
         <path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z"/>
@@ -284,9 +248,8 @@
   //   CLOCK_RIGHT = pixels depuis le bord droit         ↔
   // ============================================================
   const CLOCK_TOP   = 18;
-  const CLOCK_RIGHT = 26;   // augmenté : recule légèrement du bord droit
+  const CLOCK_RIGHT = 32;
 
-  // ── Horloge live ───────────────────────────────────────────
   const clockEl = document.getElementById('clockOverlay');
   clockEl.style.top   = CLOCK_TOP + 'px';
   clockEl.style.right = CLOCK_RIGHT + 'px';
@@ -301,13 +264,6 @@
   tick();
   setInterval(tick, 1000);
 
-  // ── Scroll vertical libre (doigt vers le haut = voir la suite) ──
-  //
-  //   • Le contenu ne peut PAS descendre sous sa position initiale
-  //     (pas de gap au-dessus du ticket)
-  //   • Le contenu remonte jusqu'à ce que toute l'image soit visible
-  //   • Rubber-banding élastique aux deux extrémités
-  // ────────────────────────────────────────────────────────────────
   const dragEl  = document.getElementById('contentDrag');
   const wrapper = document.getElementById('contentWrapper');
   const img     = document.getElementById('ticketImg');
@@ -317,8 +273,6 @@
   let liveY    = 0;
   let startY   = 0;
   let dragging = false;
-
-  // Suivi de vélocité pour le momentum
   let velocity = 0;
   let lastTouchY = 0;
   let lastTouchT = 0;
@@ -344,7 +298,7 @@
     lastTouchY = startY;
     lastTouchT = Date.now();
     velocity   = 0;
-    baseY      = liveY; // reprend depuis la position momentum actuelle
+    baseY      = liveY;
   }, { passive: true });
 
   dragEl.addEventListener('touchmove', e => {
@@ -352,27 +306,19 @@
     const now    = Date.now();
     const touchY = e.touches[0].clientY;
     const dt     = now - lastTouchT;
-
-    // Calcul vélocité instantanée (px/ms)
     if (dt > 0) velocity = (touchY - lastTouchY) / dt;
     lastTouchY = touchY;
     lastTouchT = now;
-
     let next = baseY + (touchY - startY);
-    // Rubber-banding léger aux bornes
     if (next > 0)         next = next * 0.4;
     if (next < -overflow) next = -overflow + (next + overflow) * 0.4;
-
     liveY = next;
     applyY(liveY);
   }, { passive: true });
 
   function runMomentum() {
-    // Décélération naturelle (plus haute = freine moins vite)
     velocity *= 0.94;
-    liveY    += velocity * 16; // ~16ms/frame
-
-    // Rebond aux bornes
+    liveY    += velocity * 16;
     if (liveY > 0) {
       liveY    *= 0.75;
       velocity *= 0.6;
@@ -382,9 +328,7 @@
       velocity *= 0.6;
       if (liveY < -overflow + 0.5) { liveY = -overflow; baseY = -overflow; applyY(-overflow); return; }
     }
-
     applyY(liveY);
-
     if (Math.abs(velocity) > 0.05) {
       rafId = requestAnimationFrame(runMomentum);
     } else {
@@ -398,15 +342,12 @@
     if (!dragging) return;
     dragging = false;
     baseY    = liveY;
-
-    // Lance le momentum si le doigt avait de la vitesse
     if (Math.abs(velocity) > 0.05) {
-      velocity *= 16; // convertit px/ms → px/frame
+      velocity *= 16;
       rafId = requestAnimationFrame(runMomentum);
     } else {
-      // Snap aux bornes si hors limites
-      if (liveY > 0)          baseY = 0;
-      else if (liveY < -overflow) baseY = -overflow;
+      if (liveY > 0)               baseY = 0;
+      else if (liveY < -overflow)  baseY = -overflow;
       liveY = baseY;
       applyY(baseY);
     }
